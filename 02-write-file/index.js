@@ -1,37 +1,29 @@
-console.log("123");
-const { stdin, stdout } = process;
-const fs = require("fs");
 const path = require("path");
+const fs = require("fs");
+const { stdin, stdout } = process;
 
-fs.writeFile(path.join("02-write-file", "mynotes.txt"), "", (err) => {
-    if (err) throw err;
-    console.log("Файл был создан");
-    stdout.write("Как тебя зовут?\n");
-    // process.exit();
-});
+function createTextFile() {
+    const filePath = path.join(__dirname, "text.txt");
 
-// const a = stdin.on("data", (data) => {
-//     const dataStringified = data.toString();
-//     stdout.write("Cообщение в верхнем регистре: ");
-//     stdout.write(dataStringified.toUpperCase());
-//     process.exit();
-// });
+    function writeToFile(text) {
+        fs.appendFile(filePath, text + "\n", (err) => {
+            if (err) throw err;
+            promptForText();
+        });
+    }
 
-// stdout.write("Как тебя зовут?\n");
-// stdin.on("data", (data) => {
-//     const name = data.toString();
-//     fs.appendFile(
-//         path.join(__dirname, "notes", "mynotes.txt"),
-//         " From append file",
-//         (err) => {
-//             if (err) throw err;
-//             console.log("Файл был изменен");
-//         }
-//     );
-//     process.exit();
-// });
+    function promptForText() {
+        stdout.write('Enter text ("exit" to exit): ');
+        stdin.once("data", (data) => {
+            const text = data.toString().trim();
+            if (text === "exit") {
+                console.log("Exit program");
+                process.exit();
+            }
+            writeToFile(text);
+        });
+    }
+    promptForText();
+}
 
-// fs.appendFile(path.join("02-write-file", "mynotes.txt"), a, (err) => {
-//     if (err) throw err;
-//     console.log("Файл был изменен");
-// });
+createTextFile();
