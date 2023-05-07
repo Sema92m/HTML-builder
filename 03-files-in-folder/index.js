@@ -9,7 +9,7 @@ function scanFolder(folderPath) {
             const filePath = path.join(folderPath, file);
             fs.stat(filePath, (err, stats) => {
                 if (err) throw err;
-                if (stats.isDirectory()) return;
+                if (stats.isDirectory()) return; //if its dir(not file)
                 stdout.write(
                     `${path.parse(file).name}  - ${path
                         .extname(file)
