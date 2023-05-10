@@ -22,6 +22,10 @@ function createTextFile() {
             }
             writeToFile(text);
         });
+        process.on("SIGINT", () => {
+            process.stdout.write("\n\n  ***Good bye!***  ");
+            process.exit();
+        });
     }
     promptForText();
 }
